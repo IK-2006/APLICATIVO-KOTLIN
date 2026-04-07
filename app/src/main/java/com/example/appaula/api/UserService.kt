@@ -1,5 +1,6 @@
 package com.example.appaula.api
 
+import com.example.appaula.ProdutoService
 import com.example.appaula.domain.User
 import retrofit2.Response
 import retrofit2.http.Body
@@ -22,4 +23,5 @@ interface UserService {
     suspend fun getUser(email: String, senha:String): User
     @GET("users/getMaiorId")
     suspend fun getMaiorId(): Int
+    fun create(java: Class<ProdutoService>)
 }

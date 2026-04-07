@@ -12,35 +12,45 @@ import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
 
-    var editEmail: EditText? = null;
-    var editSenha: EditText? = null;
+    // Usando 'lateinit' para inicializar depois no onCreate (mais comum em Kotlin)
+    private lateinit var editEmail: EditText
+    private lateinit var editSenha: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
+
+        // Configuração visual da barra de status
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        editEmail = findViewById<EditText>(R.id.editEmail)
-        editSenha = findViewById<EditText>(R.id.editSenha)
+
+        // Inicializando os campos de texto
+        editEmail = findViewById(R.id.editEmail)
+        editSenha = findViewById(R.id.editSenha)
     }
 
     fun fazerLogin(view: View?) {
-        val email = editEmail?.text.toString()
-        val senha = editSenha?.text.toString()
-        if (email.equals("jaqson@upf.br") && senha.equals("123456")){
-            Toast.makeText(getApplicationContext(), "Autenticado com sucesso", Toast.LENGTH_LONG).show();
-            // SE autenticou com sucesso chamar a segunda tela
-            val intent = Intent(this, UsuarioApiActivity::class.java)
+        val email = editEmail.text.toString()
+        val senha = editSenha.text.toString()
+
+        // Verificando as credenciais
+        if (email == "jaqson@upf.br" && senha == "123456") {
+            Toast.makeText(applicationContext, "Login realizado com sucesso!", Toast.LENGTH_SHORT).show()
+
+            // --- AQUI ESTÁ A CORREÇÃO ---
+            // Agora ele aponta para a sua nova tela de listagem de estoque
+            val intent = Intent(this, EstoqueListarActivity::class.java)
             startActivity(intent)
-            finish() // tira a main da pilha
+
+            // Finaliza a MainActivity para o usuário não voltar ao login apertando "voltar"
+            finish()
 
         } else {
-            Toast.makeText(getApplicationContext(), "autenticação falhou", Toast.LENGTH_LONG).show();
+            Toast.makeText(applicationContext, "E-mail ou senha incorretos", Toast.LENGTH_LONG).show()
         }
     }
-
 }

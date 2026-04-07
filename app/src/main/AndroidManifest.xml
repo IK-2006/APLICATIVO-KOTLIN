@@ -15,8 +15,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppAula">
+        <!-- Tela de Listagem (será a tela principal que abre o app) -->
         <activity
-            android:name=".UsuarioActivity"
+            android:name=".EstoqueListarActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Tela de Cadastro -->
+        <activity
+            android:name=".EstoqueCriarActivity"
             android:exported="false" />
         <activity
             android:name=".UsuarioApiActivity"

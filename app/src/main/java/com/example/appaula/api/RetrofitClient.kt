@@ -1,11 +1,11 @@
-package com.example.appaula.api
+package br.upf.ads.mercadoestoque.api
 
-import com.example.appaula.ProdutoService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitClient {
-    private const val BASE_URL = "http://10.0.2.2:9000/"
+    private const val BASE_URL = "http://10.0.2.2:3000/"
+
     val instance: ProdutoService by lazy {
         Retrofit.Builder()
             .baseUrl(BASE_URL)

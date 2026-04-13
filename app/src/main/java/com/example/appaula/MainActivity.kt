@@ -9,39 +9,42 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.example.appaula.R
 
+// Tela principal do aplicativo que serve como um menu de navegação
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_principal)
 
-        // Configura a Toolbar como ActionBar
+        // Configura a barra de ferramentas (Toolbar) no topo da tela
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.title = "Mercado Estoque"
     }
 
-    // Infla o menu na Toolbar
+    // Carrega o arquivo de menu (ícones e opções) na Toolbar
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_menu, menu)
         return true
     }
 
-    // Trata os cliques nos itens do menu
+    // Lida com o clique em cada item do menu superior
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.menu_listar -> {
+                // Abre a tela que mostra a lista de produtos
                 val intent = Intent(this, ListaProdutosActivity::class.java)
                 startActivity(intent)
                 true
             }
             R.id.menu_cadastrar -> {
+                // Abre a tela para cadastrar um novo produto
                 val intent = Intent(this, CadastroProdutoActivity::class.java)
                 startActivity(intent)
                 true
             }
             R.id.menu_sair -> {
-                // Volta para a tela de login e limpa a pilha
+                // Faz o "logout", voltando para o Login e limpando o histórico de telas
                 val intent = Intent(this, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)

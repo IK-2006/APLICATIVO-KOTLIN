@@ -5,37 +5,42 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import br.upf.ads.mercadoestoque.api.RetrofitClient
+import androidx.room.Room
 import br.upf.ads.mercadoestoque.domain.Produto
 import com.example.appaula.R
-import kotlinx.coroutines.launch
+import com.example.appaula.dao.AppDatabase
+import com.example.appaula.util.Util
 
 class ListaProdutosActivity : AppCompatActivity() {
 
     private lateinit var listView: ListView
     private var listaProdutos: MutableList<Produto> = mutableListOf()
     private lateinit var adapter: ArrayAdapter<String>
+    private var db: AppDatabase? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista_produtos)
 
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbarListaProdutos)
+        setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = "Produtos em Estoque"
 
+        db = Room.databaseBuilder(
+            applicationContext,
+            AppDatabase::class.java,
+            "mercado_estoque_db"
+        ).allowMainThreadQueries().build()
+
         listView = findViewById(R.id.listViewProdutos)
 
-        // Configura o adapter para exibir os nomes dos produtos
         adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, mutableListOf())
         listView.adapter = adapter
 
-        // Carrega os produtos da API
         carregarProdutos()
 
-        // Clique curto: editar produto
         listView.setOnItemClickListener { _, _, position, _ ->
             val produto = listaProdutos[position]
             val intent = Intent(this, CadastroProdutoActivity::class.java)
@@ -43,53 +48,24 @@ class ListaProdutosActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // Clique longo: excluir produto
         listView.setOnItemLongClickListener { _, _, position, _ ->
             val produto = listaProdutos[position]
-            AlertDialog.Builder(this)
-                .setTitle("Confirmar exclusão")
-                .setMessage("Deseja excluir o produto ${produto.nome}?")
-                .setPositiveButton("Sim") { _, _ ->
-                    excluirProduto(produto)
-                }
-                .setNegativeButton("Não", null)
-                .show()
+            Util.dialogoConfirma("Deseja excluir o produto ${produto.nome}?", this) {
+                excluirProduto(produto)
+            }
             true
         }
     }
 
     private fun carregarProdutos() {
-        lifecycleScope.launch {
-            try {
-                listaProdutos = RetrofitClient.instance.listarProdutos().toMutableList()
-                atualizarLista()
-            } catch (e: Exception) {
-                Toast.makeText(this@ListaProdutosActivity,
-                    "Erro ao carregar produtos: ${e.message}", Toast.LENGTH_LONG).show()
-            }
-        }
+        listaProdutos = db?.produtoDao()?.getAll()?.toMutableList() ?: mutableListOf()
+        atualizarLista()
     }
 
     private fun excluirProduto(produto: Produto) {
-        lifecycleScope.launch {
-            try {
-                produto.id?.let { id ->
-                    val response = RetrofitClient.instance.deletarProduto(id)
-                    if (response.isSuccessful) {
-                        listaProdutos.remove(produto)
-                        atualizarLista()
-                        Toast.makeText(this@ListaProdutosActivity,
-                            "${produto.nome} excluído!", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Toast.makeText(this@ListaProdutosActivity,
-                            "Erro ao excluir produto", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            } catch (e: Exception) {
-                Toast.makeText(this@ListaProdutosActivity,
-                    "Erro: ${e.message}", Toast.LENGTH_LONG).show()
-            }
-        }
+        db?.produtoDao()?.delete(produto)
+        Toast.makeText(this, "${produto.nome} excluído!", Toast.LENGTH_SHORT).show()
+        carregarProdutos()
     }
 
     private fun atualizarLista() {
@@ -104,7 +80,6 @@ class ListaProdutosActivity : AppCompatActivity() {
         return true
     }
 
-    // Recarrega a lista ao retornar da edição
     override fun onResume() {
         super.onResume()
         carregarProdutos()

@@ -7,4 +7,8 @@
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
+
+    <color name="roxo_principal">#6750A4</color>
+    <color name="fundo_tela">#FFF7F7F7</color>
+    <color name="texto_secundario">#FF555555</color>
 </resources>

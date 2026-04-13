@@ -6,7 +6,7 @@
     android:background="@color/fundo_tela">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarCadastroProduto"
+        android:id="@+id/toolbarCadastroUsuario"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/roxo_principal"
@@ -25,46 +25,56 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dados do produto"
+                android:text="Novo usuário"
                 android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold"
                 android:layout_marginBottom="20dp" />
 
             <EditText
-                android:id="@+id/editNome"
+                android:id="@+id/editNomeCadastro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nome do produto"
+                android:hint="Nome"
                 android:textColor="@color/black"
                 android:textColorHint="@color/texto_secundario" />
 
             <EditText
-                android:id="@+id/editQuantidade"
+                android:id="@+id/editEmailCadastro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:hint="Quantidade"
-                android:inputType="number"
+                android:hint="Email"
+                android:inputType="textEmailAddress"
                 android:textColor="@color/black"
                 android:textColorHint="@color/texto_secundario" />
 
             <EditText
-                android:id="@+id/editPreco"
+                android:id="@+id/editSenhaCadastro"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:hint="Preço"
-                android:inputType="numberDecimal"
+                android:hint="Senha"
+                android:inputType="textPassword"
+                android:textColor="@color/black"
+                android:textColorHint="@color/texto_secundario" />
+
+            <EditText
+                android:id="@+id/editConfirmarSenha"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="Confirmar senha"
+                android:inputType="textPassword"
                 android:textColor="@color/black"
                 android:textColorHint="@color/texto_secundario" />
 
             <Button
-                android:id="@+id/btnSalvar"
+                android:id="@+id/btnCadastrarUsuario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="Salvar" />
+                android:text="Cadastrar" />
 
         </LinearLayout>
     </ScrollView>

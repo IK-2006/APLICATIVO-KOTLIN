@@ -25,6 +25,11 @@
         </activity>
 
         <activity
+            android:name="br.upf.ads.mercadoestoque.CadastroUsuarioActivity"
+            android:exported="false"
+            android:parentActivityName="br.upf.ads.mercadoestoque.LoginActivity" />
+
+        <activity
             android:name="br.upf.ads.mercadoestoque.MainActivity"
             android:exported="false" />
 
